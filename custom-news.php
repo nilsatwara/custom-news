@@ -55,8 +55,8 @@ if (!function_exists('custom_post_type_news')) {
     {
 
         $labels = array(
-            'name'                  => _x('news', 'Post Type General Name', 'news'),
-            'singular_name'         => _x('news', 'Post Type Singular Name', 'news'),
+            'name'                  => _x('News', 'Post Type General Name', 'news'),
+            'singular_name'         => _x('News', 'Post Type Singular Name', 'news'),
             'menu_name'             => __('News', 'news'),
             'name_admin_bar'        => __('News', 'news'),
             'archives'              => __('News Item Archives', 'news'),
@@ -64,13 +64,13 @@ if (!function_exists('custom_post_type_news')) {
             'parent_item_colon'     => __('News Parent Item:', 'news'),
             'all_items'             => __('All News Items', 'news'),
             'add_new_item'          => __('Add New News', 'news'),
-            'add_new'               => __('Add new', 'news'),
+            'add_new'               => __('Add new news', 'news'),
             'new_item'              => __('New news', 'news'),
             'edit_item'             => __('Edit news', 'news'),
             'update_item'           => __('Update news', 'news'),
             'view_item'             => __('View news', 'news'),
             'view_items'            => __('View Items', 'news'),
-            'search_items'          => __('Search Item', 'news'),
+            'search_items'          => __('Search news', 'news'),
             'not_found'             => __('Not found', 'news'),
             'not_found_in_trash'    => __('Not found in Trash', 'news'),
             'featured_image'        => __('Featured Image', 'news'),
@@ -109,7 +109,7 @@ if (!function_exists('custom_post_type_news')) {
     function custom_taxonomy()
     {
         $labels = array(
-            'name'                       => _x('news categories', 'Taxonomy General Name', 'text_domain'),
+            'name'                       => _x('News categories', 'Taxonomy General Name', 'text_domain'),
             'singular_name'              => _x('news category', 'Taxonomy Singular Name', 'text_domain'),
             'menu_name'                  => __('News Category', 'text_domain'),
             'all_items'                  => __('All Items', 'text_domain'),
@@ -148,7 +148,7 @@ function show_custom_news()
 {
     get_header();
     ob_start(); // Start output buffering
-    ?>
+?>
     <form class="search" action="<?php echo esc_url(home_url('/')); ?>" method="get">
         <input type="search" name="s" placeholder="Search News&hellip;">
         <input type="submit" value="Search">
@@ -172,7 +172,7 @@ function show_custom_news()
             array(
                 'taxonomy' => 'news_category',
                 'field' => 'slug',
-                'terms' => 'Category'.$_GET['news_category'],
+                'terms' => 'Category' . $_GET['news_category'],
             ),
         );
     }
@@ -183,10 +183,12 @@ function show_custom_news()
         <div class="news-item">
             <div class="news-thumbnail">
                 <?php if (has_post_thumbnail()) : ?>
-                    <a href="<?php the_permalink(); ?>"><?php the_post_thumbnail('thumbnail'); ?></a>
+                    <a href="<?php the_permalink(); ?>"><?php the_post_thumbnail('large'); ?></a>
                 <?php endif; ?>
             </div>
             <div class="news-content">
+                <span><?php the_author(); ?></span>
+                <span><?php the_date(); ?></span>
                 <span><?php the_terms(get_the_ID(), 'news_category'); ?></span>
                 <h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
                 <div class="entry-content">
@@ -194,6 +196,7 @@ function show_custom_news()
                     <a href="<?php the_permalink(); ?>">Continue reading</a>
                 </div>
             </div>
+
         </div>
     <?php
     endwhile;
@@ -205,6 +208,7 @@ function show_custom_news()
         'current' => max(1, $paged),
         'prev_text' => __('&laquo; Previous'),
         'next_text' => __('Next &raquo;'),
+        'type' => 'list',
     ));
     echo '</div>';
 
